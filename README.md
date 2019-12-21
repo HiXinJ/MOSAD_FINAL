@@ -2,7 +2,7 @@
 
 ## 下载不安装
 
-```
+```bash
 go get -d github.com/hixinj/MOSAD_FINAL
 cd $GOPATH/src/github.com/hixinj/MOSAD_FINAL
 go run main.go
@@ -13,7 +13,7 @@ GET /words?size=2
 
 默认size=5
 
-
+### 返回样例
 ```json
 {
     "error_message": "",
