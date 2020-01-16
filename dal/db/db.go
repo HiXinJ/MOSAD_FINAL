@@ -86,7 +86,7 @@ func PutUsers(users []model.User) error {
 		b := tx.Bucket([]byte("user"))
 		if b != nil {
 			for i := 0; i < len(users); i++ {
-				username := users[i].Username
+				username := users[i].UserName
 				data, _ := json.Marshal(users[i])
 				b.Put([]byte(username), data)
 			}
@@ -108,7 +108,7 @@ func GetUser(username string) model.User {
 	defer db.Close()
 
 	user := model.User{
-		Username: "",
+		UserName: "",
 		Password: "",
 	}
 
@@ -162,6 +162,44 @@ func GetWords(size int64) []string {
 					// word2 := b.Get([]byte{1, 0, 0, 0, 0, 0, 0, 0})
 					wordList = append(wordList, word)
 					// fmt.Print(string(word2))
+				}
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return wordList
+}
+
+func FilterWords(size int64, filter func(word string) bool) []string {
+	wordList := make([]string, 0, size)
+	db, err := bolt.Open(GetDBPATH(), 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	err = db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("words1"))
+		if b != nil {
+			cnt := 0
+			// cursor := b.Cursor()
+			var hasList [5000]int64
+			rand.Seed(time.Now().Unix())
+
+			for /*k, v := cursor.First(); k != nil; k, v = cursor.Next()*/ {
+				if int64(cnt) == size {
+					break
+				}
+				i := rand.Intn(401)
+				word := string(b.Get([]byte(string(i))))
+				if filter(word) && hasList[i] == 0 {
+					hasList[i] = 1
+					cnt++
+					wordList = append(wordList, word)
 				}
 			}
 		}

@@ -1,9 +1,11 @@
 package model
 
 type User struct {
-	UserID   int64  `gorm:"user_id", json:"user_id"`
-	Username string `gorm:"user_name",json:"user_name"`
-	Password string `gorm:"password",json:"password"`
+	UserID       int64            `json:"user_id"`
+	UserName     string           `json:"user_name"`
+	Password     string           `json:"password"`
+	LearnedWords map[string]int64 `json:"learned_words"`
+	DaKa         []Date           `json:"daka"`
 }
 
 func TableName() string {

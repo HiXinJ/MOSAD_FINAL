@@ -1,6 +1,17 @@
+客户端用到的接口
+1. 注册登陆
+2. 随机获取单词及其解释
+3. 用户今日新词
+4. 标记单词已学
+5. 获取复习单词
+6. 打卡
+
+## 1. 随机获取单词及其解释
 GET /words?size=2
 
-默认size=5
+
+### Query Params
+- size 可选 默认5
 
 
 ```json
@@ -89,8 +100,56 @@ GET /words?size=2
 }
 ```
 
+## 2. 获取用户新词
+GET /words/new?user_name=&size=
 
-## 有道API
+### Query Params
+- user_name 必须
+- size 单词个数，可选 默认5
+
+
+## 3. 标记单词已学
+POST /users/{user_name}/learnedword?word=
+需token
+
+### Request Header 
+```json
+{
+    "authorization": "string",
+}
+```
+
+
+
+
+## 4. 打卡
+POST /users/{user_name}/daka  
+
+
+### Request Header 
+```json
+{
+    "authorization": "string",
+}
+```
+
+### Response  
+```json
+{
+    "message":"string",
+    "error_message":"string",
+    "ndays":"int64",
+    "date":[
+        {
+            "year":"int64",
+            "month":"int64",
+            "day":"int64",
+        }
+    ]
+}
+```
+
+## 5. 有道API
 
 ```bash
 curl  http://fanyi.youdao.com/openapi.do?keyfrom=pdblog&key=993123434&type=data&doctype=json&version=1.1&only=dict&q=server
