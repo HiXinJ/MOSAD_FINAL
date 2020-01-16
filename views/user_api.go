@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"regexp"
 	"time"
 
 	mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
@@ -24,6 +25,7 @@ func UserLogin(c *gin.Context) {
 			"error_message": "param error",
 		})
 	}
+
 	// 验证用户密码
 	check := mydb.GetUser(user.UserName)
 	if check.UserName != user.UserName || user.UserName == "" {
@@ -60,7 +62,31 @@ func UserLogin(c *gin.Context) {
 func UserRegister(c *gin.Context) {
 	var user model.User
 	json.NewDecoder(c.Request.Body).Decode(&user)
+	// 用户密码合法性检查
+	ok, _ := regexp.MatchString(`^[\w]{3,18}$`, user.UserName)
+	if !ok {
+		c.JSON(200, gin.H{
+			"message":       "failed",
+			"error_message": "用户名必须为3-18个字母，数字或者下划线",
+		})
+		return
+	}
+	ok, _ = regexp.MatchString(`^[\w]{6,18}$`, user.Password)
+	if !ok {
+		c.JSON(200, gin.H{
+			"message":       "failed",
+			"error_message": "密码必须为3-18个字母，数字或者下划线",
+		})
+		return
+	}
 
+	// if user.UserName == "" || user.Password == "" {
+	// 	c.JSON(200, gin.H{
+	// 		"message":       "",
+	// 		"error_message": "参数错误",
+	// 	})
+	// 	return
+	// }
 	// 验证UserName
 	check := mydb.GetUser(user.UserName)
 	if check.UserName != "" {
@@ -154,7 +180,7 @@ func SignToken(userName string) (string, error) {
 
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := make(jwt.MapClaims)
-	claims["exp"] = time.Now().Add(time.Hour * time.Duration(1)).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * time.Duration(10)).Unix()
 	claims["iat"] = time.Now().Unix()
 	claims["name"] = userName
 	token.Claims = claims

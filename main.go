@@ -12,11 +12,12 @@ func main() {
 
 	router.POST("/users", views.UserRegister)
 	router.POST("/users/login", views.UserLogin)
-	router.POST("/users/{user_name}/learnedword", views.AddLearnedWrod)
 	router.GET("/words", views.GetWords)
 	router.GET("/words/new", views.GetNewWords)
+	router.POST("/words/learnedword", views.AddLearnedWrod)
+	router.GET("/words/reviews", views.GetReviews)
 	router.GET("/words/translation", views.GetTranslation)
-	router.POST("/users/{user_name}/daka", views.DaKa)
+	router.POST("/users/daka", views.DaKa)
 
 	router.Run(":8081")
 }

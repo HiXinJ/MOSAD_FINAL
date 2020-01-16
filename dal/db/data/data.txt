@@ -74,8 +74,6 @@ desk
 reliability
 nonzero
 extremely
-negate
-antistatic
 necessary
 require
 demand
