@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"log"
 	"math/rand"
+	"runtime"
 	"time"
 
 	"os"
@@ -20,14 +21,19 @@ import (
 //************************************************************************
 
 func GetDBDIR() string {
-	// ostype := runtime.GOOS
-	// if ostype == "windows" {
-	// 	pt, _ := os.Getwd()
-	// 	return pt + "\\dal\\db\\Blog.db"
-	// }
+	ostype := runtime.GOOS
+	pt, _ := os.Getwd()
+	if ostype == "windows" {
+		return pt + "\\dal\\db"
+	}
+
 	return path.Join(os.Getenv("GOPATH"), "src", "github.com", "hixinj", "MOSAD_FINAL", "dal", "db")
 }
 func GetDBPATH() string {
+	ostype := runtime.GOOS
+	if ostype == "windows" {
+		return GetDBDIR() + "\\data\\final.db"
+	}
 	return path.Join(GetDBDIR(), "data", "final.db")
 }
 

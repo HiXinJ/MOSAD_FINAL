@@ -18,6 +18,7 @@ func main() {
 	router.GET("/words/reviews", views.GetReviews)
 	router.GET("/words/translation", views.GetTranslation)
 	router.POST("/users/daka", views.DaKa)
-
+	router.GET("/users/head", views.GetHead)
+	router.POST("/users/head", views.PostHead)
 	router.Run(":8081")
 }

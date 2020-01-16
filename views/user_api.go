@@ -7,11 +7,12 @@ import (
 	"regexp"
 	"time"
 
-	mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
+	"io/ioutil"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
 	"github.com/gin-gonic/gin"
+	mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
 	"github.com/hixinj/MOSAD_FINAL/dal/model"
 )
 
@@ -143,6 +144,51 @@ func DaKa(c *gin.Context) {
 	res["ndays"] = ndays
 	res["date"] = user.DaKa
 	c.JSON(200, res)
+}
+
+func GetHead(c *gin.Context) {
+	userName := ValidateToken(c.Writer, c.Request)
+	if userName == "" {
+		c.JSON(200, gin.H{
+			"message":       "failed",
+			"error_message": "authentication fail",
+		})
+		return
+	}
+
+	user := mydb.GetUser(userName)
+	c.Data(200, "image/png", user.Head)
+}
+
+func PostHead(c *gin.Context) {
+	userName := ValidateToken(c.Writer, c.Request)
+
+	if userName == "" {
+		c.JSON(200, gin.H{
+			"message":       "failed",
+			"error_message": "authentication fail",
+		})
+		return
+	}
+
+	user := mydb.GetUser(userName)
+	img, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		c.JSON(200, gin.H{
+			"message":       "failed",
+			"error_message": err.Error(),
+		})
+		return
+	}
+	if user.Head == nil {
+		user.Head = make([]byte, len(img))
+	}
+	copy(user.Head, img)
+	mydb.PutUsers([]model.User{user})
+	c.JSON(200, gin.H{
+		"message":       "success",
+		"error_message": "",
+	})
 }
 
 //******************** token ********************
