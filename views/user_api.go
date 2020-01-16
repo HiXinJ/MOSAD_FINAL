@@ -135,7 +135,10 @@ func DaKa(c *gin.Context) {
 	now := time.Now()
 	today := model.Date{int64(now.Year()), int64(now.Month()), int64(now.Day())}
 	user := mydb.GetUser(userName)
-	user.DaKa = append(user.DaKa, today)
+	if i := len(user.DaKa); i == 0 || !(user.DaKa[i-1].Year == today.Year && user.DaKa[i-1].Month == today.Month && user.DaKa[i-1].Day == today.Day) {
+		user.DaKa = append(user.DaKa, today)
+	}
+	mydb.PutUsers([]model.User{user})
 	ndays := len(user.DaKa)
 	res := gin.H{
 		"message":       "success",
