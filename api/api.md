@@ -20,6 +20,12 @@
 - [单词翻译](#%e5%8d%95%e8%af%8d%e7%bf%bb%e8%af%91)
   - [Query Param](#query-param-2)
   - [Response](#response-6)
+- [上传用户头像](#%e4%b8%8a%e4%bc%a0%e7%94%a8%e6%88%b7%e5%a4%b4%e5%83%8f)
+  - [Request Header](#request-header-2)
+  - [Response](#response-7)
+- [获取用户头像](#%e8%8e%b7%e5%8f%96%e7%94%a8%e6%88%b7%e5%a4%b4%e5%83%8f)
+  - [Request Header](#request-header-3)
+  - [Response](#response-8)
 
 
 Response至少包含"error_message"和"message".    
@@ -221,3 +227,35 @@ GET /words/translation?word=
     ]
 }
 ```
+
+## 上传用户头像
+
+POST /users/head
+
+### Request Header 
+```json
+{
+    "authorization": "string",
+}
+```
+
+### Response
+```json
+{
+    "error_message": "",
+    "message": "success"
+}
+```
+
+## 获取用户头像
+GET /users/head
+
+### Request Header 
+```json
+{
+    "authorization": "string",
+}
+```
+
+### Response
+图像字节流

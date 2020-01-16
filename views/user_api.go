@@ -158,6 +158,9 @@ func GetHead(c *gin.Context) {
 
 	user := mydb.GetUser(userName)
 	c.Data(200, "image/png", user.Head)
+	// f, _ := os.Open("1.png")
+	// img, _ := ioutil.ReadAll(f)
+	// c.Data(200, "image/png", img)
 }
 
 func PostHead(c *gin.Context) {
@@ -173,6 +176,8 @@ func PostHead(c *gin.Context) {
 
 	user := mydb.GetUser(userName)
 	img, err := ioutil.ReadAll(c.Request.Body)
+	ioutil.WriteFile("1.png", img, 0644)
+
 	if err != nil {
 		c.JSON(200, gin.H{
 			"message":       "failed",
@@ -180,11 +185,12 @@ func PostHead(c *gin.Context) {
 		})
 		return
 	}
-	if user.Head == nil {
-		user.Head = make([]byte, len(img))
-	}
+
+	user.Head = make([]byte, len(img))
 	copy(user.Head, img)
 	mydb.PutUsers([]model.User{user})
+	t := mydb.GetUser(user.UserName)
+	fmt.Println(t.UserName)
 	c.JSON(200, gin.H{
 		"message":       "success",
 		"error_message": "",
