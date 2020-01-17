@@ -15,7 +15,6 @@ import (
 
 	"github.com/boltdb/bolt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/hixinj/MOSAD_FINAL/dal/model"
 )
 
 //************************************************************************
@@ -37,7 +36,7 @@ func GetDBPATH() string {
 	return path.Join(GetDBDIR(), "data", "final.db")
 }
 
-func PutUsers(users []model.User) error {
+func PutUsers(users []User) error {
 	db, err := bolt.Open(GetDBPATH(), 0600, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -65,14 +64,14 @@ func PutUsers(users []model.User) error {
 	return nil
 }
 
-func GetUser(username string) model.User {
+func GetUser(username string) User {
 	db, err := bolt.Open(GetDBPATH(), 0600, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	user := model.User{
+	user := User{
 		UserName: "",
 		Password: "",
 	}

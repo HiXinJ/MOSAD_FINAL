@@ -9,16 +9,16 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	// mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
 	mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
-	"github.com/hixinj/MOSAD_FINAL/dal/model"
 )
 
-func getfanyi(wordsList []string) []model.SimpleTranslation {
+func getfanyi(wordsList []string) []mydb.SimpleTranslation {
 	baseurl := "http://fanyi.youdao.com/openapi.do?keyfrom=pdblog&key=993123434&type=data&doctype=json&version=1.1&only=dict&q="
 
 	size := len(wordsList)
 	cnt := 0
-	fanyi := make([]model.SimpleTranslation, 0)
+	fanyi := make([]mydb.SimpleTranslation, 0)
 	for i := 0; i < len(wordsList); i++ {
 		item := wordsList[i]
 		url := baseurl + item
@@ -36,8 +36,8 @@ func getfanyi(wordsList []string) []model.SimpleTranslation {
 		response, _ := client.Do(reqest)
 		// resBody, err := ioutil.ReadAll(response.Body)
 		// resBody := new(interface{})
-		resBody := new(model.Translation)
-		simpleTrans := model.SimpleTranslation{}
+		resBody := new(mydb.Translation)
+		simpleTrans := mydb.SimpleTranslation{}
 		json.NewDecoder(response.Body).Decode(&resBody)
 		if err != nil {
 			log.Fatal(err)
@@ -92,12 +92,8 @@ func GetNewWords(c *gin.Context) {
 		return
 	}
 
-	wordsList := mydb.FilterWords(size, func(word string) bool {
-		if _, ok := user.LearnedWords[word]; ok {
-			return false
-		}
-		return true
-	})
+	wordsList := user.UpdateNewWords(size)
+
 	res := gin.H{
 		"message":       "success",
 		"error_message": "",
@@ -150,7 +146,7 @@ func AddLearnedWrod(c *gin.Context) {
 	user := mydb.GetUser(userName)
 	user.LearnedWords[word] = 1
 	// 更新
-	mydb.PutUsers([]model.User{user})
+	mydb.PutUsers([]mydb.User{user})
 
 	c.JSON(200, gin.H{
 		"message":       "success",
@@ -213,7 +209,7 @@ func GetTranslation(c *gin.Context) {
 
 	baseurl := "http://fanyi.youdao.com/openapi.do?keyfrom=pdblog&key=993123434&type=data&doctype=json&version=1.1&only=dict&q="
 
-	fanyi := make([]model.SimpleTranslation, 0)
+	fanyi := make([]mydb.SimpleTranslation, 0)
 
 	item := word
 	url := baseurl + item
@@ -231,8 +227,8 @@ func GetTranslation(c *gin.Context) {
 	response, _ := client.Do(reqest)
 	// resBody, err := ioutil.ReadAll(response.Body)
 	// resBody := new(interface{})
-	resBody := new(model.Translation)
-	simpleTrans := model.SimpleTranslation{}
+	resBody := new(mydb.Translation)
+	simpleTrans := mydb.SimpleTranslation{}
 	json.NewDecoder(response.Body).Decode(&resBody)
 	if err != nil {
 		log.Fatal(err)

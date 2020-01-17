@@ -1,4 +1,4 @@
-package model
+package mydb
 
 type SimpleTranslation struct {
 	Query     string   `json:"query"`

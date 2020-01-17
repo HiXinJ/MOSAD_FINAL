@@ -12,12 +12,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
 	"github.com/gin-gonic/gin"
+
+	// mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
 	mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
-	"github.com/hixinj/MOSAD_FINAL/dal/model"
 )
 
 func UserLogin(c *gin.Context) {
-	var user model.User
+	var user mydb.User
 	// user.UserName, _ = c.GetPostForm("user_name")
 	err := json.NewDecoder(c.Request.Body).Decode(&user)
 	if err != nil {
@@ -61,7 +62,7 @@ func UserLogin(c *gin.Context) {
 }
 
 func UserRegister(c *gin.Context) {
-	var user model.User
+	var user mydb.User
 	json.NewDecoder(c.Request.Body).Decode(&user)
 	// 用户密码合法性检查
 	ok, _ := regexp.MatchString(`^[\w]{3,18}$`, user.UserName)
@@ -98,7 +99,7 @@ func UserRegister(c *gin.Context) {
 		return
 	}
 	// 存储User
-	err := mydb.PutUsers([]model.User{user})
+	err := mydb.PutUsers([]mydb.User{user})
 	if err != nil {
 		c.JSON(200, gin.H{
 			"message":       "",
@@ -133,12 +134,12 @@ func DaKa(c *gin.Context) {
 		return
 	}
 	now := time.Now()
-	today := model.Date{int64(now.Year()), int64(now.Month()), int64(now.Day())}
+	today := mydb.Date{int64(now.Year()), int64(now.Month()), int64(now.Day())}
 	user := mydb.GetUser(userName)
 	if i := len(user.DaKa); i == 0 || !(user.DaKa[i-1].Year == today.Year && user.DaKa[i-1].Month == today.Month && user.DaKa[i-1].Day == today.Day) {
 		user.DaKa = append(user.DaKa, today)
 	}
-	mydb.PutUsers([]model.User{user})
+	mydb.PutUsers([]mydb.User{user})
 	ndays := len(user.DaKa)
 	res := gin.H{
 		"message":       "success",
@@ -191,7 +192,7 @@ func PostHead(c *gin.Context) {
 
 	user.Head = make([]byte, len(img))
 	copy(user.Head, img)
-	mydb.PutUsers([]model.User{user})
+	mydb.PutUsers([]mydb.User{user})
 	t := mydb.GetUser(user.UserName)
 	fmt.Println(t.UserName)
 	c.JSON(200, gin.H{
