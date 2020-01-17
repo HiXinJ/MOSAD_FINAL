@@ -7,8 +7,6 @@ import (
 	"regexp"
 	"time"
 
-	"io/ioutil"
-
 	"github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
 	"github.com/gin-gonic/gin"
@@ -136,7 +134,7 @@ func DaKa(c *gin.Context) {
 	now := time.Now()
 	today := mydb.Date{int64(now.Year()), int64(now.Month()), int64(now.Day())}
 	user := mydb.GetUser(userName)
-	if i := len(user.DaKa); i == 0 || !(user.DaKa[i-1].Year == today.Year && user.DaKa[i-1].Month == today.Month && user.DaKa[i-1].Day == today.Day) {
+	if i := len(user.DaKa); i == 0 || !(user.DaKa[i-1].Equals(&today)) {
 		user.DaKa = append(user.DaKa, today)
 	}
 	mydb.PutUsers([]mydb.User{user})
@@ -161,10 +159,13 @@ func GetHead(c *gin.Context) {
 	}
 
 	user := mydb.GetUser(userName)
-	c.Data(200, "image/png", user.Head)
-	// f, _ := os.Open("1.png")
-	// img, _ := ioutil.ReadAll(f)
-	// c.Data(200, "image/png", img)
+	// c.Data(200, "image/png", user.Head)
+
+	c.JSON(200, gin.H{
+		"message":       "success",
+		"error_message": "",
+		"head":          user.Head,
+	})
 }
 
 func PostHead(c *gin.Context) {
@@ -179,10 +180,10 @@ func PostHead(c *gin.Context) {
 	}
 
 	user := mydb.GetUser(userName)
-	img, err := ioutil.ReadAll(c.Request.Body)
-	ioutil.WriteFile("1.png", img, 0644)
-
-	if err != nil {
+	user.Head = c.DefaultQuery("head", "")
+	// img, err := ioutil.ReadAll(c.Request.Body)
+	// ioutil.WriteFile("1.png", img, 0644)
+	/*if err != nil {
 		c.JSON(200, gin.H{
 			"message":       "failed",
 			"error_message": err.Error(),
@@ -192,9 +193,9 @@ func PostHead(c *gin.Context) {
 
 	user.Head = make([]byte, len(img))
 	copy(user.Head, img)
+	*/
 	mydb.PutUsers([]mydb.User{user})
-	t := mydb.GetUser(user.UserName)
-	fmt.Println(t.UserName)
+
 	c.JSON(200, gin.H{
 		"message":       "success",
 		"error_message": "",

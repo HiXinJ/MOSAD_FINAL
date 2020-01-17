@@ -8,9 +8,9 @@ type User struct {
 	Password     string           `json:"password"`
 	LearnedWords map[string]int64 `json:"learned_words"`
 	DaKa         []Date           `json:"daka"`
-	Head         []byte           `json:"head`
-	lastUpdate   Date
-	NewWords     map[string]int64
+	Head         string           `json:"head`
+	lastUpdate   Date             `json:"lastUpdate"`
+	NewWords     map[string]int64 `json:"new_words"`
 }
 
 func TableName() string {
@@ -19,12 +19,19 @@ func TableName() string {
 
 func (user *User) LearnWord(word string) {
 	user.LearnedWords[word] = 1
+	delete(user.NewWords, word)
 }
 
 func (user *User) UpdateNewWords(size int64) []string {
 	// 每天产生一次新词
 	if user.lastUpdate.Equals(new(Date).Reset(time.Now())) {
-		return nil
+		wordList := make([]string, 0)
+		for item, n := range user.NewWords {
+			if n != 0 {
+				wordList = append(wordList, item)
+			}
+		}
+		return wordList
 	}
 
 	var today Date
@@ -33,14 +40,14 @@ func (user *User) UpdateNewWords(size int64) []string {
 
 	// 删除以前的新词，重新生成新词
 	user.NewWords = make(map[string]int64)
-	WordsList := FilterWords(size, func(word string) bool {
+	wordsList := FilterWords(size, func(word string) bool {
 		if _, ok := user.LearnedWords[word]; ok {
 			return false
 		}
 		return true
 	})
-	for _, word := range WordsList {
+	for _, word := range wordsList {
 		user.NewWords[word] = 1
 	}
-	return WordsList
+	return wordsList
 }
