@@ -1,10 +1,8 @@
 package main
 
 import (
-	"github.com/hixinj/MOSAD_FINAL/views"
-
-	// "code.byted.org/gopkg/logs"
 	"github.com/gin-gonic/gin"
+	"github.com/hixinj/MOSAD_FINAL_Group05/views"
 )
 
 func main() {

@@ -10,10 +10,10 @@ type User struct {
 	Password      string           `json:"password"`
 	LearnedWords  map[string]int64 `json:"learned_words"`
 	PendingReview map[string]int64 `json:"pending_review"`
+	NewWords      map[string]int64 `json:"new_words"`
 	DaKa          []Date           `json:"daka"`
 	Head          string           `json:"head`
 	LastUpdate    Date             `json:"lastUpdate"`
-	NewWords      map[string]int64 `json:"new_words"`
 }
 
 func TableName() string {
@@ -44,7 +44,9 @@ func (user *User) UpdateNewWords(size int64) ([]string, bool) {
 	// 删除以前的新词，重新生成新词
 	user.NewWords = make(map[string]int64)
 	wordsList := FilterWords(size, func(word string) bool {
-		if _, ok := user.LearnedWords[word]; ok {
+		_, ok := user.LearnedWords[word]
+		_, ok2 := user.PendingReview[word]
+		if ok || ok2 {
 			return false
 		}
 		return true
@@ -84,6 +86,5 @@ func (user *User) GetReviews(size int64) []string {
 			break
 		}
 	}
-
 	return reviewList
 }

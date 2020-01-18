@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/boltdb/bolt"
-	mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
+	mydb "github.com/hixinj/MOSAD_FINAL_Group05/dal/db"
 )
 
 func main() {

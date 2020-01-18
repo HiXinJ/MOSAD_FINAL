@@ -1,17 +1,13 @@
 package mydb
 
 import (
-
-	// "code.byted.org/gopkg/logs"
-
 	"encoding/json"
 	"log"
 	"math/rand"
-	"runtime"
-	"time"
-
 	"os"
 	"path"
+	"runtime"
+	"time"
 
 	"github.com/boltdb/bolt"
 	_ "github.com/go-sql-driver/mysql"
@@ -26,7 +22,7 @@ func GetDBDIR() string {
 		return pt + "\\dal\\db"
 	}
 
-	return path.Join(os.Getenv("GOPATH"), "src", "github.com", "hixinj", "MOSAD_FINAL", "dal", "db")
+	return path.Join(os.Getenv("GOPATH"), "src", "github.com", "hixinj", "MOSAD_FINAL_Group05", "dal", "db")
 }
 func GetDBPATH() string {
 	ostype := runtime.GOOS

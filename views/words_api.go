@@ -7,8 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	// mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
-	mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
+	mydb "github.com/hixinj/MOSAD_FINAL_Group05/dal/db"
 )
 
 func getfanyi(wordsList []string) []mydb.SimpleTranslation {

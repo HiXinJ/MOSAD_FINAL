@@ -1,12 +1,16 @@
+# 第 5 小组 现代操作系统应用开发 —— 随背app 服务端
 
 
-## 下载不安装
+## 部署后端
 
+使用 go get -d 下载项目后进入根目录运行
+
+### 下载
 ```bash
 go get -d github.com/hixinj/MOSAD_FINAL
 ```
 
-## 运行
+### 运行
 ```bash
 cd $GOPATH/src/github.com/hixinj/MOSAD_FINAL
 go run main.go
@@ -14,5 +18,3 @@ go run main.go
 
 ## 接口
 见[api.md](api/api.md)
-
-

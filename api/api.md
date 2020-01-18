@@ -49,7 +49,8 @@ POST /users
 {
    "error_message": "string",
    "message": "string",
-   "token":"string"
+   "token":"string",
+   "user_id":"int",
 }
 ```
 
@@ -61,7 +62,8 @@ POST /users/login
 ```json
 {
  	"user_name":"string",
-	"password":"string"
+	"password":"string",
+    "user_id":"int",
 }
 ```
 

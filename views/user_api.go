@@ -12,9 +12,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
 	"github.com/gin-gonic/gin"
-
-	// mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
-	mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
+	mydb "github.com/hixinj/MOSAD_FINAL_Group05/dal/db"
 )
 
 func UserLogin(c *gin.Context) {
@@ -220,6 +218,7 @@ func PostHead(c *gin.Context) {
 // SecretKey ..
 const SecretKey = "123qwe"
 
+// ValidateToken  认证用户请求，认证成功返回用户名，否则返回空字符串
 func ValidateToken(w http.ResponseWriter, r *http.Request) string {
 	token, err := request.ParseFromRequest(r, request.AuthorizationHeaderExtractor,
 		func(token *jwt.Token) (interface{}, error) {
@@ -246,6 +245,7 @@ func ValidateToken(w http.ResponseWriter, r *http.Request) string {
 	return ""
 }
 
+// SignToken 为userName签发token，token包含了用户名
 func SignToken(userName string) (string, error) {
 
 	token := jwt.New(jwt.SigningMethodHS256)
