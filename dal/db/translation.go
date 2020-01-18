@@ -7,6 +7,7 @@ type SimpleTranslation struct {
 	Explains  []string `json:"explains"`
 	ExampleCH string   `json:"examples_ch"`
 	ExampleEN string   `json:"examples_en"`
+	Type      int      `json:"type` //1 新词， 2 复习词
 }
 
 type Translation struct {

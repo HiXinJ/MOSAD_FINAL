@@ -1,6 +1,8 @@
 package views
 
 import (
+	"crypto/md5"
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -55,6 +57,7 @@ func UserLogin(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message":       "success",
 		"token":         tokenString,
+		"user_id":       check.UserID,
 		"error_message": "",
 	})
 }
@@ -97,6 +100,15 @@ func UserRegister(c *gin.Context) {
 		return
 	}
 	// 存储User
+	// user.UserID = Binary. []byte(user.UserName)
+	h := md5.New()
+	h.Write([]byte(user.UserName))
+	user.UserID = binary.LittleEndian.Uint32(h.Sum(nil)[0:5])
+
+	// 其它初始化
+	user.LearnedWords = make(map[string]int64, 0)
+	user.PendingReview = make(map[string]int64, 0)
+	user.NewWords = make(map[string]int64, 0)
 	err := mydb.PutUsers([]mydb.User{user})
 	if err != nil {
 		c.JSON(200, gin.H{
@@ -117,8 +129,9 @@ func UserRegister(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message":       "success",
-		"token":         tokenString,
 		"error_message": "",
+		"token":         tokenString,
+		"user_id":       user.UserID,
 	})
 }
 

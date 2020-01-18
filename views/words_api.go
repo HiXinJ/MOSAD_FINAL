@@ -3,10 +3,8 @@ package views
 import (
 	"encoding/json"
 	"log"
-	"math/rand"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	// mydb "github.com/hixinj/MOSAD_FINAL/dal/db"
@@ -92,14 +90,19 @@ func GetNewWords(c *gin.Context) {
 		return
 	}
 
-	wordsList := user.UpdateNewWords(size)
-
+	wordsList, _ := user.UpdateNewWords(size)
 	res := gin.H{
 		"message":       "success",
 		"error_message": "",
 	}
 	// res["words"] = wordsList
-	res["fanyi"] = getfanyi(wordsList)
+	translation := getfanyi(wordsList)
+	res["fanyi"] = translation
+	user.NewWords = make(map[string]int64, len(translation))
+	for _, t := range translation {
+		user.NewWords[t.Query] = 1
+	}
+	mydb.PutUsers([]mydb.User{user})
 	c.JSON(200, res)
 }
 
@@ -144,7 +147,8 @@ func AddLearnedWrod(c *gin.Context) {
 		return
 	}
 	user := mydb.GetUser(userName)
-	user.LearnedWords[word] = 1
+	// user.LearnedWords[word] = 1
+	user.AddLearnedWord(word)
 	// 更新
 	mydb.PutUsers([]mydb.User{user})
 
@@ -154,6 +158,7 @@ func AddLearnedWrod(c *gin.Context) {
 	})
 }
 
+// GetReviews
 func GetReviews(c *gin.Context) {
 	userName := ValidateToken(c.Writer, c.Request)
 	if userName == "" {
@@ -167,34 +172,12 @@ func GetReviews(c *gin.Context) {
 	sizeStr := c.DefaultQuery("size", "5")
 	size, _ := strconv.ParseInt(sizeStr, 10, 64)
 	user := mydb.GetUser(userName)
-	wordsList := make([]string, len(user.LearnedWords))
-	i := 0
-	for k := range user.LearnedWords {
-		wordsList[i] = k
-		i++
-	}
-	res := gin.H{
+	reviewList := user.GetReviews(size)
+	c.JSON(200, gin.H{
 		"message":       "success",
 		"error_message": "",
-	}
-	if int(size) > len(user.LearnedWords) {
-		res["translation"] = getfanyi(wordsList)
-	} else { // 从用户已学单词中随机获取size个单词
-		visited := make([]int, 1000)
-		reviewList := make([]string, 0)
-		rand.Seed(time.Now().Unix())
-		for i = 0; i < (int)(size); {
-			t := rand.Intn(len(user.LearnedWords))
-			if visited[t] == 0 {
-				reviewList = append(reviewList, wordsList[t])
-				i++
-			}
-			visited[t] = 1
-		}
-		res["translation"] = getfanyi(reviewList)
-	}
-
-	c.JSON(200, res)
+		"translation":   getfanyi(reviewList),
+	})
 }
 
 func GetTranslation(c *gin.Context) {
