@@ -95,7 +95,7 @@ func GetNewWords(c *gin.Context) {
 		"error_message": "",
 	}
 	// res["words"] = wordsList
-	translation := getfanyi(wordsList)
+	translation := mydb.Getfanyi(wordsList)
 	res["fanyi"] = translation
 	user.NewWords = make(map[string]int64, len(translation))
 	for _, t := range translation {
@@ -122,7 +122,7 @@ func GetWords(c *gin.Context) {
 	}
 	res["words"] = wordsList
 
-	res["fanyi"] = getfanyi(wordsList)
+	res["fanyi"] = mydb.Getfanyi(wordsList)
 	c.JSON(200, res)
 
 	// fmt.Println(size)
@@ -175,7 +175,7 @@ func GetReviews(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message":       "success",
 		"error_message": "",
-		"translation":   getfanyi(reviewList),
+		"translation":   mydb.Getfanyi(reviewList),
 	})
 }
 

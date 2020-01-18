@@ -92,6 +92,36 @@ func GetUser(username string) User {
 	return user
 }
 
+func Getfanyi(wordsList []string) []SimpleTranslation {
+	db, err := bolt.Open(GetDBPATH(), 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	translationList := make([]SimpleTranslation, 0)
+	err = db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("words_translation"))
+		if b != nil {
+			for _, word := range wordsList {
+				data := b.Get([]byte(word))
+				translation := SimpleTranslation{}
+				er := json.Unmarshal(data, &translation)
+				if er != nil {
+					log.Fatal(er)
+				}
+				translationList = append(translationList, translation)
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return translationList
+}
+
 func GetWords(size int64) []string {
 	wordList := make([]string, 0, size)
 	db, err := bolt.Open(GetDBPATH(), 0600, nil)
@@ -143,21 +173,30 @@ func FilterWords(size int64, filter func(word string) bool) []string {
 	defer db.Close()
 
 	err = db.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte("words1"))
+		b := tx.Bucket([]byte("words_translation"))
 		if b != nil {
 			cnt := 0
-			// cursor := b.Cursor()
-			var hasList [5000]int64
+			cursor := b.Cursor()
+			var hasList [1000]int64
 			rand.Seed(time.Now().Unix())
 
-			for /*k, v := cursor.First(); k != nil; k, v = cursor.Next()*/ {
+			for /*k, _ := cursor.First(); k != nil; k, _ = cursor.Next()*/ {
 				if int64(cnt) == size {
 					break
 				}
-				i := rand.Intn(401)
-				word := string(b.Get([]byte(string(i))))
-				if filter(word) && hasList[i] == 0 {
-					hasList[i] = 1
+
+				i := rand.Intn(400)
+				j := 0
+				k, _ := cursor.First()
+				for k, _ = cursor.Next(); hasList[i] == 0 && j < i; k, _ = cursor.Next() {
+					j++
+				}
+				hasList[i] = 1
+				// word := string(b.Get([]byte(string(i))))
+
+				word := string(k)
+				if filter(word) /*&& hasList[i] == 0*/ {
+					// hasList[i] = 1
 					cnt++
 					wordList = append(wordList, word)
 				}
