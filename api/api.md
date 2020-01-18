@@ -2,7 +2,7 @@
 - [注册](#%e6%b3%a8%e5%86%8c)
   - [body param](#body-param)
   - [Response](#response)
-- [登陆](#%e7%99%bb%e9%99%86)
+- [登录](#%e7%99%bb%e5%bd%95)
   - [body param](#body-param-1)
   - [Response](#response-1)
 - [获取用户新词](#%e8%8e%b7%e5%8f%96%e7%94%a8%e6%88%b7%e6%96%b0%e8%af%8d)
@@ -55,7 +55,7 @@ POST /users
 ```
 
 
-## 登陆
+## 登录
 POST /users/login
 
 ### body param
