@@ -1,3 +1,4 @@
+// 事先获取单词翻译 存储在数据库中
 package main
 
 import (
