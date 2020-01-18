@@ -7,7 +7,7 @@
 
 ### 下载
 ```bash
-go get -d github.com/hixinj/MOSAD_FINAL
+go get -d github.com/hixinj/MOSAD_FINAL_Group05
 ```
 
 ### 运行
