@@ -12,7 +12,7 @@ go get -d github.com/hixinj/MOSAD_FINAL_Group05
 
 ### 运行
 ```bash
-cd $GOPATH/src/github.com/hixinj/MOSAD_FINAL
+cd $GOPATH/src/github.com/hixinj/MOSAD_FINAL_Group05
 go run main.go
 ```
 
