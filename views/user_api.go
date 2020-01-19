@@ -76,7 +76,7 @@ func UserRegister(c *gin.Context) {
 	if !ok {
 		c.JSON(200, gin.H{
 			"message":       "failed",
-			"error_message": "密码必须为3-18个字母，数字或者下划线",
+			"error_message": "密码必须为6-18个字母，数字或者下划线",
 		})
 		return
 	}
@@ -192,6 +192,7 @@ func PostHead(c *gin.Context) {
 
 	user := mydb.GetUser(userName)
 	user.Head = c.DefaultQuery("head", "")
+
 	// img, err := ioutil.ReadAll(c.Request.Body)
 	// ioutil.WriteFile("1.png", img, 0644)
 	/*if err != nil {

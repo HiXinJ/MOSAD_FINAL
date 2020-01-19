@@ -115,7 +115,9 @@ func GetWords(c *gin.Context) {
 			"error_message": err.Error(),
 		})
 	}
-	wordsList := mydb.GetWords(size)
+	wordsList := mydb.FilterWords(size, func(word string) bool {
+		return true
+	})
 	res := gin.H{
 		"message":       "success",
 		"error_message": "",

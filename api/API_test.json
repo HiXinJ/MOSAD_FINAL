@@ -1,0 +1,683 @@
+{
+    "version": 6,
+    "entities": [
+        {
+            "entity": {
+                "type": "Project",
+                "description": "",
+                "id": "84334e9e-bd54-4f97-a143-2d7fea19c4fc",
+                "name": "MOSAD_FINAL"
+            },
+            "children": [
+                {
+                    "entity": {
+                        "type": "Scenario",
+                        "description": "",
+                        "id": "15e92498-c84f-48a6-95c5-dbe7f4cdb1d2",
+                        "name": "Scenario 1"
+                    },
+                    "children": [
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text",
+                                    "textBodyEditorHeight": 230,
+                                    "textBody": "{\n \t\"user_name\":\"Alice\",\n\t\"password\":\"123456\"\n}"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "127.0.0.1:8081",
+                                    "path": "/users"
+                                },
+                                "id": "3a887689-bb9d-4749-b9bc-2218fab71298",
+                                "name": "success_register",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    },
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.error_message",
+                                        "value": "\"\""
+                                    },
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.message",
+                                        "value": "\"success\""
+                                    },
+                                    {
+                                        "comparison": "Exists",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.token",
+                                        "value": "200"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text",
+                                    "textBodyEditorHeight": 230,
+                                    "textBody": "{\n \t\"user_name\":\"Alice\",\n\t\"password\":\"123456\"\n}"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "127.0.0.1:8081",
+                                    "path": "/users"
+                                },
+                                "id": "9bc687a5-630c-487b-8155-d1f121d4865a",
+                                "name": "duplicated_register",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    },
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.error_message",
+                                        "value": "\"用户已存在\""
+                                    },
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseJsonBody",
+                                        "enabled": true,
+                                        "path": "$.message",
+                                        "value": "\"\""
+                                    },
+                                    {
+                                        "comparison": "DoesNotExist",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.token",
+                                        "value": "200"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text",
+                                    "textBody": "{\n \t\"user_name\":\"Alice\",\n\t\"password\":\"12345a\"\n}"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "127.0.0.1:8081",
+                                    "path": "/users/login"
+                                },
+                                "id": "c165250f-1b90-448c-a657-f89d0acbd8e4",
+                                "name": "fail_login",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "DoesNotExist",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.token",
+                                        "value": "200"
+                                    },
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.error_message",
+                                        "value": "\"密码错误\""
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text",
+                                    "textBody": "{\n \t\"user_name\":\"Alice\",\n\t\"password\":\"123456\"\n}"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "127.0.0.1:8081",
+                                    "path": "/users/login"
+                                },
+                                "id": "12ee9096-baa1-4d20-8ce7-c69f36e66e90",
+                                "name": "success_login",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "Exists",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.token",
+                                        "value": "200"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "user_name",
+                                                "value": "Alice"
+                                            },
+                                            {
+                                                "enabled": true,
+                                                "name": "size",
+                                                "value": "5"
+                                            }
+                                        ]
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "127.0.0.1:8081",
+                                    "path": "/words/new"
+                                },
+                                "id": "bc5a511a-2463-49b0-bb52-9e333fc09d93",
+                                "name": "get new words",
+                                "headers": [],
+                                "assertions": [
+                                    {
+                                        "comparison": "LengthEqual",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.fanyi",
+                                        "value": "5"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "word",
+                                                "value": "phase"
+                                            }
+                                        ]
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8081",
+                                    "path": "/words/learnedword"
+                                },
+                                "id": "26b2f755-2625-40f1-8d0f-18df256afbbe",
+                                "name": "post learned words",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "enabled": true,
+                                        "name": "Authorization",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1Nzk0NDQ1MTUsImlhdCI6MTU3OTQwODUxNSwibmFtZSI6IkFsaWNlIn0.10OBjAGGP050flaynqa4fdRXfQ2diD9XL21EY9Hr9TM"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "size",
+                                                "value": "1"
+                                            }
+                                        ]
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8081",
+                                    "path": "/words/reviews"
+                                },
+                                "id": "8b8cf7ea-7f5f-49cd-a4ff-70468af9728d",
+                                "name": "get reviews",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Authorization",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1Nzk0NDQ1MTUsImlhdCI6MTU3OTQwODUxNSwibmFtZSI6IkFsaWNlIn0.10OBjAGGP050flaynqa4fdRXfQ2diD9XL21EY9Hr9TM"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    },
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.translation.query",
+                                        "value": "\"phase\""
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "user_name",
+                                                "value": "Alice"
+                                            },
+                                            {
+                                                "enabled": true,
+                                                "name": "size",
+                                                "value": "5"
+                                            }
+                                        ]
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "127.0.0.1:8081",
+                                    "path": "/words/new"
+                                },
+                                "id": "b938f806-f104-49f7-a96d-3b652800facd",
+                                "name": "get new words again",
+                                "headers": [],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    },
+                                    {
+                                        "comparison": "LengthEqual",
+                                        "subject": "ResponseJsonBody",
+                                        "path": "$.fanyi",
+                                        "value": "4"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "name": "word",
+                                                "value": "lexicon"
+                                            }
+                                        ]
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8081",
+                                    "path": "/words/translation"
+                                },
+                                "id": "2bc9a52f-e456-4ebd-b7d5-dbbf2682ec1c",
+                                "name": "translate",
+                                "headers": [],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "127.0.0.1:8081",
+                                    "path": "/users/daka"
+                                },
+                                "id": "78441633-0181-479b-b48a-09cb6ce5dc6a",
+                                "name": "da ka",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "enabled": true,
+                                        "name": "Authorization",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1Nzk0NDQ1MTUsImlhdCI6MTU3OTQwODUxNSwibmFtZSI6IkFsaWNlIn0.10OBjAGGP050flaynqa4fdRXfQ2diD9XL21EY9Hr9TM"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text",
+                                    "textBody": "{\n  \"head\":\"base64 of image\",\n}"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8081",
+                                    "path": "/users/head"
+                                },
+                                "id": "6685a6a0-42a3-4c75-ba64-7dc4fc3f9429",
+                                "name": "post head image",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Authorization",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1Nzk0NDM1MTQsImlhdCI6MTU3OTQwNzUxNCwibmFtZSI6IkJvYiJ9.2wnd4dVHWtyaKjGxNiBWvYJczn7LmMHf0pqZp2j6P4Y"
+                                    },
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                                    "name": "GET"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": []
+                                    },
+                                    "bodyType": "Text"
+                                },
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "name": "http",
+                                        "version": "V11"
+                                    },
+                                    "host": "localhost:8081",
+                                    "path": "/users/head"
+                                },
+                                "id": "e18a07b7-bf04-48b7-907d-4bcfb659030e",
+                                "name": "get head image",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Authorization",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1Nzk0NDM1MTQsImlhdCI6MTU3OTQwNzUxNCwibmFtZSI6IkJvYiJ9.2wnd4dVHWtyaKjGxNiBWvYJczn7LmMHf0pqZp2j6P4Y"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
